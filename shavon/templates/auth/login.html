@@ -1,0 +1,60 @@
+{% extends public_wrapper %}
+{% set page_title = "Login to Shavon" %}
+
+{% block extend_header %}
+<script>
+async function perform_auth() {
+    const email = document.querySelector("#email").value;
+    const password = document.querySelector("#password").value;
+    const response = await fetch("/auth/login", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ 
+            'email': email, 
+            'password': password
+        })
+    });
+    const results = await response.json();
+
+    if (results["status"] == "ok") {
+        // TODO: Redirect to the home page or a dashboard
+        console.log("Login successful!");
+    } else {
+        // handle_errors(results);
+        console.error("Login failed:", results["message"]);
+    }
+}
+
+// Run after page is loaded
+document.addEventListener("DOMContentLoaded", function() {
+
+    // Attach event listener to the login button
+    const login_button = document.querySelector("#login_button");
+    login_button.addEventListener("click", async function(event) {
+        // clear_errors();
+        await perform_auth();
+    });
+});
+
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="content_card">
+    <div class="card_heading">Login</div>
+
+    <div class="form_item email">
+        <div><label for="email">Email:</label></div>
+        <div><input type="text" id="email" name="email"></div>
+    </div>
+    <div class="form_item password">
+        <div><label for="password">Password:</label></div>
+        <div><input id="password" name="password" type="password"></div>
+    </div>
+    <div class="form_control">
+        <button id="login_button" class="button">Login</button>
+    </div>
+</div>
+{% endblock %}

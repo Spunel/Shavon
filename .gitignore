@@ -1,0 +1,13 @@
+# IDE Configs
+.dist/
+shavon.code-workspace
+
+# Python environment
+.venv/
+
+# Compiled python
+*.pyc
+__pycache__/
+
+# Project configs
+.env

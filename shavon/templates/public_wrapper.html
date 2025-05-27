@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <title>{% if page_title %}{{ page_title }}{% endif %}</title>
+        <link rel="stylesheet" href="/static/css/sitewide.css" />
+
+<style>
+    .hidden {
+        display: none;
+    }
+
+    .error_wrapper {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
+    .error_wrapper .error_message {
+        background-color: #f8d7da;
+        color: #721c24;
+        padding: 10px;
+        border-radius: 5px;
+        margin: 5px;
+        font-size: 16px;
+    }
+</style>
+<script type="text/javascript">
+
+function handle_errors(errors, target_div=null) {
+    // Unpack errors and call add_error for each to display in target_div
+
+    // TODO: Remove these schema comments for production. Just for development.
+    /* Schema:
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Generated schema for Root",
+  "type": "object",
+  "properties": {
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "field": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "message"
+        ]
+      }
+    }
+  },
+  "required": [
+    "errors"
+  ]
+}
+    */
+}
+
+function add_error(message, target_div=null) {
+    // Add given error message to the target_div
+    // If target_div is not specified, use default_error_wrapper
+}
+
+function add_success(message, target_div=null) {
+    // Add given success message to the target_div
+    // If target_div is not specified, use default_success_wrapper
+}
+
+function clear_errors() {
+    // Clear errors from all divs with class `error_wrapper`
+}
+
+</script>
+
+{% block extend_header %}{% endblock %}
+
+    </head>
+    <body>
+        <div id="default_error_wrapper" class="error_wrapper hidden"></div>
+        <div id="default_success_wrapper" class="success_wrapper hidden"></div>
+        <div class="web_wrapper">
+          <div class="header">
+            <div class="logo"></div>
+            <div class="navbar">
+              <a href="{{ request.url_for('auth.login') }}">Home</a>
+            </div>
+            <div class="title">Shavon</div>
+          </div>
+            {% block content %}{% endblock %}
+        </div>
+    </body>
+</html>
