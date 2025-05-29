@@ -34,7 +34,7 @@ def render_template(
     file_name: str,
     settings: ModuleType,
     request: sanic.request = None, 
-    wrapper: str = 'web_wrapper.html',
+    wrapper: str = 'public_wrapper.html',
     env_config: dict[str, Any] = {},
     **kwargs: dict[str, Any]
 ) -> str:
@@ -57,7 +57,7 @@ def render_template(
     template = env.get_template(file_name)
 
     context = dict(
-        web_wrapper=wrapper,
+        wrapper=wrapper,
         **settings.SAFE_SETTINGS,
     )
 
