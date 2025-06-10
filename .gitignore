@@ -11,3 +11,4 @@ __pycache__/
 
 # Project configs
 .env
+ravenb.code-workspace

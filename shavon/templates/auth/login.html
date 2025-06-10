@@ -6,7 +6,7 @@
 async function perform_auth() {
     const email = document.querySelector("#email").value;
     const password = document.querySelector("#password").value;
-    const response = await fetch("/auth/login", {
+    const response = await fetch("{{ request.app.url_for('auth.login_proc') }}", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -19,8 +19,7 @@ async function perform_auth() {
     const results = await response.json();
 
     if (results["status"] == "ok") {
-        // TODO: Redirect to the home page or a dashboard
-        console.log("Login successful!");
+        window.location.href = results["redirect_url"];
     } else {
         // handle_errors(results);
         console.error("Login failed:", results["message"]);
