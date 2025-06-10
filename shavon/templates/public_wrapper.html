@@ -90,7 +90,15 @@ function clear_errors() {
           <div class="header">
             <div class="logo"></div>
             <div class="navbar">
-              <a href="#">Home</a>
+              <a href="{{ request.app.url_for('info.index') }}">Home</a> | 
+              {% if request.ctx.session and request.ctx.user %}
+              <a href="{{ request.app.url_for('profile.view', user_id=request.ctx.user.id) }}">My Profile</a> |
+              <a href="{{ request.app.url_for('auth.logout') }}">Logout</a>
+              {% else %}
+              <a href="{{ request.app.url_for('auth.login') }}">Login</a> |
+              <a href="#">Register </a>
+              {% endif %}
+
             </div>
             <div class="title">Shavon</div>
           </div>

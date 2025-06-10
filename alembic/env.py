@@ -12,6 +12,7 @@ from shavon.models import ModelBase
 # Import all models to ensure changes are detected
 from shavon.models import (
     auth,
+    session,
 )
 
 # this is the Alembic Config object, which provides

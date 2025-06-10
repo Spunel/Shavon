@@ -5,20 +5,26 @@ from shavon import db
 from shavon import settings
 from shavon.models.auth import User 
 from shavon.utilities.templating import render_template
+from shavon.utilities.session import auth_required
 
 
 blueprint = sanic.Blueprint("profile", url_prefix="/profile")
 
 @blueprint.route("/manage", methods=["GET"], name="manage")
+@auth_required
 async def profile_manage(request):
     """
     Render the manage profile page.
     """
+    # User is attached to request.ctx by the decorator
+    user = request.ctx.user
+    
     response = sanic.response.html(
         render_template(
             "profile/manage.html", 
             settings=settings,
-            request=request
+            request=request,
+            user=user
         )
     )
     return response

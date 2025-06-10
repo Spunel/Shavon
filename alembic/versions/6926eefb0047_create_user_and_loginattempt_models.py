@@ -11,6 +11,7 @@ from alembic import op
 import sqlalchemy as sa
 from shavon.utilities import dthelpers
 
+
 # revision identifiers, used by Alembic.
 revision: str = '6926eefb0047'
 down_revision: Union[str, None] = None

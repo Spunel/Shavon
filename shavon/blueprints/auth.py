@@ -10,6 +10,11 @@ from shavon.models.auth import (
     User,
     LoginAttempt,
 )
+from shavon.models.session import Session
+from shavon.utilities.session import (
+    auth_required,
+    clear_cookie
+)
 from shavon.utilities.templating import render_template
 from shavon.utilities.json_helpers import (
     fail_response,
@@ -96,13 +101,23 @@ async def login_proc(request):
         await session.delete(login_attempt)
         await session.commit()
 
-    # Setup the secure access_token and attatch it to the response
+    # Create a new session record
+    async with db.session() as session:
+        user_session = await Session.create_session(
+            session=session,
+            user_id=user.id,
+            ip_address=request.ip,
+            user_agent=request.headers.get('user-agent', ''),
+        )
+        await session.commit()
+
     # Start with an ok_response
     response = ok_response()
 
-    # Built the JWT payload
+    # Built the JWT payload with session key
     payload = { 
         "user_id": user.id,
+        "session_key": user_session.session_key,
     }
 
     # Build the access_token
@@ -124,3 +139,29 @@ async def login_proc(request):
     )
     return response
 
+
+@blueprint.route("/logout", methods=["GET"], name="logout")
+@auth_required
+async def logout(request):
+    """ Log out the user by destroying their session.
+    """
+
+    # Delete the session from the database
+    async with db.session() as session:
+        # Get the session key from the cookie
+        user_session = request.ctx.session
+        
+        # If a session exists, delete it
+        if user_session:
+            await session.delete(user_session)
+            await session.commit()
+
+    # Redirect to the login page
+    response = sanic.response.redirect(
+        request.app.url_for("auth.login")
+    )
+
+    # Clear the previous session cookie
+    response = clear_cookie(response)
+
+    return response
